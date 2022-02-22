@@ -32,3 +32,94 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+## Prisma Setup
+
+1. VS Code 에 Prisma extension 설치
+
+2. Prisma 설치
+
+```sh
+$ yarn add -D prisma
+```
+
+3. 프로젝트에 Prisma 설정
+
+```sh
+$ npx prisma init
+(or yarn prisma init)
+```
+
+아래와 같이 두 파일이 생성됨
+
+> prisma/schema.prisma : 데이터베이스 연결 및 Prisma 클라이언트 생성기가 있는 Prisma schema
+> .env : 환경 변수를 정의하기 위한 dotenv 파일
+
+## PlanetScale
+
+pscale 사용을 위해 아래와 같이 설치한다.
+
+macOS
+
+```sh
+$ brew install planetscale/tap/pscale
+$ brew install mysql-client
+
+// 설치후 아래 명령어로 잘 설치되었는지 확인
+$ pscale
+```
+
+### 로그인
+
+```sh
+pscale auth login
+```
+
+- region 확인(slug 확인 for 데이터베이스 생성)
+
+```sh
+$ pscale region list
+```
+
+### database 생성
+
+```sh
+$ pscale database create carrot-market --region ap-northeast
+```
+
+https://app.planetscale.com/elle0510 에서 생성된 database 확인
+
+### pscale connect
+
+로컬과 PlanetScale 사이에 암호없이 보안 연결(secure tunnel)을 한다.
+
+```sh
+$ pscale connect carrot-market
+```
+
+연결된 console 을 닫지 않는다.
+
+출력된 정보로
+
+.env 파일의 DATABASE_URL 설정을 해준다.
+
+### db push
+
+```sh
+$ npx prisma db push
+```
+
+https://app.planetscale.com/elle0510/carrot-market/main/schema
+에서 schema 확인(최초 push 시는 User Model)
+
+### prisma studio
+
+```sh
+$ npx prisma studio
+```
+
+### prisma client 설치
+
+```sh
+$ yarn add @prisma/client
+```
