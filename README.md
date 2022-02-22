@@ -55,6 +55,12 @@ $ npx prisma init
 > prisma/schema.prisma : 데이터베이스 연결 및 Prisma 클라이언트 생성기가 있는 Prisma schema
 > .env : 환경 변수를 정의하기 위한 dotenv 파일
 
+schema.prisma 에서는 아래 3가지를 설정할 수 있다.
+
+- Data source: 데이터베이스를 연결
+- Generator: Prisma Client를 생성
+- Data model: 애플리케이션의 모델(데이터베이스 테이블)을 정의
+
 ## PlanetScale
 
 pscale 사용을 위해 아래와 같이 설치한다.
@@ -109,6 +115,7 @@ $ pscale connect carrot-market
 $ npx prisma db push
 ```
 
+참고로 @prisma/client 가 설치됨
 https://app.planetscale.com/elle0510/carrot-market/main/schema
 에서 schema 확인(최초 push 시는 User Model)
 
@@ -118,7 +125,11 @@ https://app.planetscale.com/elle0510/carrot-market/main/schema
 $ npx prisma studio
 ```
 
+http://localhost:5555/ 웹페이지로 자동 이동됨
+
 ### prisma client 설치
+
+위에서 db push 할 때 설치됨(만약 안되었다면 수동으로 설치)
 
 ```sh
 $ yarn add @prisma/client
