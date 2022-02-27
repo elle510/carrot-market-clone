@@ -9,19 +9,24 @@ async function handler(
   res: NextApiResponse<ResponseType>
 ) {
   const { token } = req.body;
-  const exists = await client.token.findUnique({
+  const foundToken = await client.token.findUnique({
     where: {
       payload: token,
     },
     // include: { user: true }, // user 객체정보도 포함되는 쿼리
   });
-  if (!exists) return res.status(404).end();
-  console.log(exists);
+  if (!foundToken) return res.status(404).end();
+  console.log(foundToken);
+
   req.session.user = {
-    id: exists?.userId,
+    id: foundToken.userId,
   };
   await req.session.save();
-
+  await client.token.deleteMany({
+    where: {
+      userId: foundToken.userId,
+    },
+  });
   // res.status(200).end();
   res.json({ ok: true });
 }
