@@ -5,16 +5,17 @@ export interface ResponseType {
   [key: string]: any;
 }
 
+type method = "POST" | "GET" | "DELETE" | "PUT";
 interface ConfigType {
-  method: "POST" | "GET" | "DELETE" | "PUT";
+  methods: method[];
   handler: (req: NextApiRequest, res: NextApiResponse) => void;
   isPrivate?: boolean;
 }
 
-const withHandler = ({ method, handler, isPrivate = true }: ConfigType) => {
+const withHandler = ({ methods, handler, isPrivate = true }: ConfigType) => {
   return async (req: NextApiRequest, res: NextApiResponse): Promise<any> => {
     // Method 체크
-    if (req.method !== method) {
+    if (req.method && !methods.includes(req.method as any)) {
       return res.status(405).end(); // return 있고 없고 차이 없을 듯
     }
     // 로그인 체크(브라우저 쿠키 체크)
